@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeMentix | Institutional Trading Systems</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00bfff;
+            --primary-glow: rgba(0, 191, 255, 0.4);
+            --bg-deep: #05070a;
+            --bg-surface: #0d1117;
+            --bg-card: #161b22;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+            --border: rgba(48, 54, 61, 0.8);
+            --transition: all 0.25s ease;
+        }
+
+        /* Light Mode Overrides */
+        [data-theme="light"] {
+            --bg-deep: #f0f2f5;
+            --bg-surface: #ffffff;
+            --bg-card: #f8f9fa;
+            --text-main: #1a1a1b;
+            --text-dim: #4b5563;
+            --border: rgba(0, 0, 0, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-deep); color: var(--text-main); line-height: 1.5; overflow-x: hidden; scroll-behavior: smooth; transition: background 0.3s, color 0.3s; }
+        h1, h2, h3, .logo { font-family: 'Lexend', sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
+
+        /* --- Technical Enhancement: Loading Animation --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-deep); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .candlestick-loader { display: flex; gap: 8px; align-items: center; }
+        .candle { width: 8px; border-radius: 2px; animation: candle-grow 1s infinite ease-in-out; }
+        .candle.bull { background: #26a69a; height: 40px; }
+        .candle.bear { background: #ef5350; height: 30px; }
+        .candle:nth-child(2) { height: 55px; animation-delay: 0.2s; }
+        @keyframes candle-grow { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.3); } }
+
+        /* --- Header (Enhanced Blur + Theme Toggle) --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(var(--bg-surface), 0.7); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            padding: 18px 8%; display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; border-bottom: 1px solid var(--border);
+            background: var(--bg-surface); opacity: 0.98;
+        }
+        .logo { font-size: 22px; font-weight: 700; color: var(--text-main); text-decoration: none; letter-spacing: 1px; }
+        .logo span { color: var(--primary); }
+        nav a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-weight: 500; transition: var(--transition); font-size: 14px; }
+        nav a:hover { color: var(--primary); }
+        
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .theme-btn { cursor: pointer; font-size: 18px; color: var(--text-main); transition: 0.3s; }
+
+        /* --- Hero --- */
+        .hero { text-align: center; padding: 180px 20px 100px; background: radial-gradient(circle at center, rgba(0, 191, 255, 0.05) 0%, transparent 70%); }
+        .hero h1 { font-size: 56px; margin-bottom: 20px; line-height: 1.1; }
+
+        /* --- About --- */
+        .about-wrapper { display: flex; align-items: center; gap: 50px; background: var(--bg-surface); padding: 50px; border-radius: 30px; border: 1px solid var(--border); margin-bottom: 60px; }
+        .about-img { width: 280px; height: 280px; border-radius: 20px; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+
+        /* --- Mentorship --- */
+        .mentorship-card { background: var(--bg-card); border: 1px solid var(--primary); padding: 50px; border-radius: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .course-list { list-style: none; margin: 25px 0; }
+        .course-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 12px; color: var(--text-main); }
+        .course-list li i { color: var(--primary); }
+
+        /* --- Tools Slider & Grid --- */
+        .slider-container { position: relative; width: 100%; height: 240px; overflow: hidden; border-bottom: 1px solid var(--border); background: #000; }
+        .slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .slider-img { min-width: 100%; height: 100%; object-fit: cover; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.7); color: white; border: none; width: 40px; height: 40px; cursor: pointer; z-index: 10; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .slider-btn:hover { background: var(--primary); color: #000; }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .tool-card { background: var(--bg-card); border-radius: 24px; overflow: hidden; border: 1px solid var(--border); transition: var(--transition); }
+        .tool-card:hover { border-color: var(--primary); transform: translateY(-8px); }
+        .tool-content { padding: 30px; }
+
+        /* --- Form --- */
+        .form-card { background: var(--bg-surface); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 700px; margin: 0 auto; text-align: center; }
+        .input-group { margin-bottom: 20px; text-align: left; display: flex; flex-direction: column; }
+        .input-group label { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
+        input, textarea { background: var(--bg-deep); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: var(--text-main); width: 100%; }
+
+        /* --- Buttons --- */
+        .btn { padding: 16px 32px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-block; border: none; }
+        .btn-primary { background: var(--primary); color: #000; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-glow); }
+
+        /* --- Footer (FULL RESTORED) --- */
+        .footer-main { background: var(--bg-surface); padding: 80px 8% 40px; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
+        .footer-col h3 { color: var(--primary); font-size: 20px; margin-bottom: 25px; }
+        .footer-col p { color: var(--text-dim); font-size: 14px; line-height: 1.8; max-width: 300px; }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 15px; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+        .contact-info { list-style: none; }
+        .contact-info li { display: flex; align-items: center; gap: 15px; color: var(--text-dim); font-size: 14px; margin-bottom: 18px; }
+        .contact-info i { color: var(--primary); font-size: 16px; }
+        .social-title { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 20px; }
+        .social-row { display: flex; gap: 15px; margin-bottom: 30px; }
+        .social-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; transition: 0.3s; border: 1px solid var(--border); }
+        .social-btn:hover { background: var(--primary); color: #000; transform: translateY(-3px); }
+
+        /* --- Sidebar --- */
+        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 380px; height: 100%; background: var(--bg-surface); z-index: 2000; transition: 0.4s; padding: 40px; border-left: 1px solid var(--border); overflow-y: auto; }
+        .cart-sidebar.active { right: 0; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; background: rgba(var(--primary), 0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
+
+        @media (max-width: 992px) {
+            .about-wrapper, .mentorship-card { flex-direction: column; grid-template-columns: 1fr; text-align: center; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; text-align: left; }
+            .hero h1 { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="candlestick-loader">
+            <div class="candle bull"></div>
+            <div class="candle bear"></div>
+            <div class="candle bull"></div>
+        </div>
+        <p style="margin-top: 15px; color: var(--primary); font-size: 12px; letter-spacing: 3px; font-weight:600;">TRADEMENTIX</p>
+    </div>
+
+    <header>
+        <a href="#" class="logo">TRADE<span>MENTIX</span></a>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#mentorship">Mentorship</a>
+            <a href="#tools">Indicators</a>
+            <a href="#custom-script">Pine Script</a>
+        </nav>
+        <div class="header-right">
+            <div class="theme-btn" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="theme-icon"></i>
+            </div>
+            <div style="cursor:pointer; position:relative" onclick="toggleCart()">
+                <i class="fas fa-shopping-bag" style="font-size: 20px; color: var(--text-main);"></i>
+                <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--primary); color:#000; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Trade with <br><span style="color:var(--primary)">Pure Logic</span></h1>
+        <p style="color: var(--text-dim); font-size: 18px; max-width: 600px; margin: 0 auto 30px;">Institutional SMC/ICT Strategies & Custom Pine Script Tools.</p>
+        <a href="#tools" class="btn btn-primary">Browse Tools</a>
+    </section>
+
+    <section class="container" id="about">
+        <div class="about-wrapper">
+            <img src="https://iili.io/frdlVm7.jpg" alt="Aneeq - Trading Mentor" class="about-img">
+            <div class="about-text">
+                <h3>Hi, I'm Aneeq</h3>
+                <p style="color: var(--text-dim);">I am a professional trading mentor and Strategy developer. I provide high-quality indicators and structured trading education, helping traders master market structure, liquidity, and high-probability entries with confidence.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="mentorship">
+        <h2 style="text-align: center; margin-bottom: 50px;">Private Mentorship</h2>
+        <div class="mentorship-card">
+            <div>
+                <h3 style="color: var(--primary);">SMC + ICT Mastery</h3>
+                <ul class="course-list">
+                    <li><i class="fas fa-check-circle"></i> Market Structure & MSS</li>
+                    <li><i class="fas fa-check-circle"></i> Liquidity (All types of liquidity)</li>
+                    <li><i class="fas fa-check-circle"></i> All Types Of Blocks</li>
+                    <li><i class="fas fa-check-circle"></i> Fair Value Gaps & IFVG</li>
+                    <li><i class="fas fa-check-circle"></i> ICT Entry Levels</li>
+                    <li><i class="fas fa-check-circle"></i> Advanced Risk Management</li>
+                    <li><i class="fas fa-check-circle"></i> Advanced Trading Psychology</li>
+                    <li><i class="fas fa-check-circle"></i> Lifetime Access To Our VIP Community</li>
+                </ul>
+            </div>
+            <div style="text-align: center; background: rgba(var(--primary), 0.03); padding: 30px; border-radius: 20px;">
+                <div style="font-size: 40px; font-weight: 800; margin-bottom: 15px;">$50</div>
+                <a href="https://wa.me/+923246481070?text=I%20want%20to%20enroll%20in%20mentorship" target="_blank" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="tools">
+        <h2 style="text-align: center; margin-bottom: 50px;">Premium Tools</h2>
+        <div class="tools-grid">
+            
+            <div class="tool-card">
+                <div class="slider-container" id="slider-1">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-1', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/frdpcOu.png" class="slider-img">
+                        <img src="https://iili.io/frdyyCv.png" class="slider-img">
+                        <img src="https://iili.io/frdtVyb.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-1', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>MFX V15</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Precision scalping signals for high-probability trades.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$14.99</span>
+                        <button onclick="addToCart('MFX V15', 14.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="slider-container" id="slider-2">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-2', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/fr2BkI2.png" class="slider-img">
+                        <img src="https://iili.io/fr2Q7kb.png" class="slider-img">
+                        <img src="https://iili.io/fr2ojdg.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-2', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>Quantum FX Scalper</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Real-time market insights for accurate entries.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$29.99</span>
+                        <button onclick="addToCart('Quantum FX Scalper', 29.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="slider-container" id="slider-3">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-3', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/fr2ugJ1.png" class="slider-img">
+                        <img src="https://iili.io/fr39YXa.png" class="slider-img">
+                        <img src="https://iili.io/fr25MUN.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-3', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>WOI Scalper</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Automated H-L sweeps.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$9.99</span>
+                        <button onclick="addToCart('WOI scalper', 9.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="slider-container" id="slider-4">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-4', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/fr2czI1.png" class="slider-img">
+                        <img src="https://iili.io/fr33cUx.png" class="slider-img">
+                        <img src="https://iili.io/fr3S5Qe.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-4', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>Alpha FX Scalper</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Multi-timeframe bias alignment.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$29.99</span>
+                        <button onclick="addToCart('Alpha FX Scalper', 29.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="slider-container" id="slider-5">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-5', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/fr3oKF9.png" class="slider-img">
+                        <img src="https://iili.io/fr3ItV4.png" class="slider-img">
+                        <img src="https://iili.io/fr3uwZJ.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-5', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>Liquidity Hunter Pro</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Detects liquidity zones and smart money moves.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$50</span>
+                        <button onclick="addToCart('Liquidity Hunter Pro', 50)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="slider-container" id="slider-6">
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-6', -1)"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-track">
+                        <img src="https://iili.io/fr37Lb9.png" class="slider-img">
+                        <img src="https://iili.io/fr3YmhX.png" class="slider-img">
+                        <img src="https://iili.io/fr3ab8Q.png" class="slider-img">
+                    </div>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider-6', 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="tool-content">
+                    <h3>Price Action Pro</h3>
+                    <p style="color:var(--text-dim); margin-bottom:15px;">Advanced price action trading precision.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size: 20px; font-weight: 700;">$69.99</span>
+                        <button onclick="addToCart('Price Action Pro', 69.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="container" id="custom-script">
+        <div class="form-card">
+            <h3>Custom Pine Script Request</h3>
+            <div class="input-group">
+                <label>Strategy Name</label>
+                <input type="text" id="strat-name">
+            </div>
+            <div class="input-group">
+                <label>Strategy Details</label>
+                <textarea id="strat-desc" rows="4"></textarea>
+            </div>
+            <button onclick="sendScriptRequest()" class="btn btn-primary" style="width: 100%;">Send via WhatsApp</button>
+        </div>
+    </section>
+
+    <footer class="footer-main">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>TradeMentix by Aneeq</h3>
+                <p>Professional trading mentor and computer science student specializing in institutional price action and custom Pine Script tools.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#about">About Mentor</a></li>
+                    <li><a href="#tools">Trading Tools</a></li>
+                    <li><a href="#mentorship">Enrollment</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Details</h3>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> support@tradementix.com</li>
+                    <li><i class="fab fa-whatsapp"></i> +92 324 6481070</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Punjab, Pakistan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--border); padding-top: 40px;">
+            <div class="social-title">Follow My Setup</div>
+            <div class="social-row">
+                <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
+                <a href="https://t.me/yourhandle" class="social-btn"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-btn"><i class="fab fa-x-twitter"></i></a>
+            </div>
+            <p style="color: var(--text-dim); font-size: 13px;">© 2026 TradeMentix by Aneeq. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h3>Your Cart</h3>
+            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size: 20px;"></i>
+        </div>
+        <div id="cart-items"></div>
+        <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
+            <div style="display:flex; justify-content:space-between; font-weight:700;">
+                <span>Total</span>
+                <span id="total-price" style="color: var(--primary);">$0.00</span>
+            </div>
+            <button onclick="checkoutWhatsApp()" class="btn btn-primary" style="width: 100%; margin-top:20px;">Checkout via WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Dark/Light Mode Logic ---
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if (body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Load Saved Theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            document.getElementById('theme-icon').className = 'fas fa-sun';
+        }
+
+        // --- Loader Logic ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
+            }, 1000); 
+        });
+
+        let cart = [];
+        const MY_NUMBER = "+923246481070";
+        const sliderStates = {};
+
+        function moveSlider(sliderId, dir) {
+            const slider = document.getElementById(sliderId);
+            const track = slider.querySelector('.slider-track');
+            const images = track.querySelectorAll('.slider-img');
+            if (!sliderStates[sliderId]) sliderStates[sliderId] = 0;
+            sliderStates[sliderId] = (sliderStates[sliderId] + dir + images.length) % images.length;
+            track.style.transform = `translateX(-${sliderStates[sliderId] * 100}%)`;
+        }
+
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+        
+        function updateCart() {
+            const list = document.getElementById('cart-items');
+            const count = document.getElementById('cart-count');
+            const total = document.getElementById('total-price');
+            list.innerHTML = cart.length === 0 ? '<p style="color:var(--text-dim); text-align:center;">Empty.</p>' : '';
+            let sum = 0;
+            cart.forEach((item, index) => {
+                sum += item.price;
+                list.innerHTML += `<div class="cart-item">
+                    <div><h4>${item.name}</h4><span>$${item.price.toFixed(2)}</span></div>
+                    <i class="fas fa-times" style="color:#ff4d4d; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                </div>`;
+            });
+            total.innerText = `$${sum.toFixed(2)}`;
+            count.innerText = cart.length;
+        }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart();
+        }
+
+        function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+
+        function checkoutWhatsApp() {
+            if(cart.length === 0) return;
+            let items = cart.map(i => i.name).join(", ");
+            window.open(`https://wa.me/${MY_NUMBER}?text=Order: ${items}`, '_blank');
+        }
+
+        function sendScriptRequest() {
+            let n = document.getElementById('strat-name').value;
+            let d = document.getElementById('strat-desc').value;
+            window.open(`https://wa.me/${MY_NUMBER}?text=Script Request: ${n}%0ADetails: ${d}`, '_blank');
+        }
+    </script>
+</body>
+</html>
