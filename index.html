@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="https://i.ibb.co/bDL5Bzr/Screenshot-2026-01-26-195542.png">
 <link rel="shortcut icon" href="https://i.ibb.co/bDL5Bzr/Screenshot-2026-01-26-195542.png">
 <link rel="apple-touch-icon" href="https://i.ibb.co/bDL5Bzr/Screenshot-2026-01-26-195542.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>TradeMentix | Institutional Trading Systems</title>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap">
@@ -24,7 +24,6 @@
             --transition: all 0.25s ease;
         }
 
-        /* Light Mode Overrides */
         [data-theme="light"] {
             --bg-deep: #f0f2f5;
             --bg-surface: #ffffff;
@@ -39,12 +38,16 @@
         h1, h2, h3, .logo { font-family: 'Lexend', sans-serif; }
         .container { max-width: 1200px; margin: 0 auto; padding: 80px 20px; }
 
-        /* --- Technical Enhancement: Loading Animation --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-deep); display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
             transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
         .candlestick-loader { display: flex; gap: 8px; align-items: center; }
         .candle { width: 8px; border-radius: 2px; animation: candle-grow 1s infinite ease-in-out; }
@@ -53,7 +56,14 @@
         .candle:nth-child(2) { height: 55px; animation-delay: 0.2s; }
         @keyframes candle-grow { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.3); } }
 
-        /* --- Header (Enhanced Blur + Theme Toggle) --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        #main-content.visible {
+            opacity: 1;
+        }
+
         header {
             position: fixed; top: 0; width: 100%;
             background: rgba(var(--bg-surface), 0.7); 
@@ -62,7 +72,7 @@
             z-index: 1000; border-bottom: 1px solid var(--border);
             background: var(--bg-surface); opacity: 0.98;
         }
-        .logo { font-size: 22px; font-weight: 700; color: var(--text-main); text-decoration: none; letter-spacing: 1px; }
+        .logo { font-size: 22px; font-weight: 700; color: var(--text-main); text-decoration: none; letter-spacing: 1px; cursor: pointer; }
         .logo span { color: var(--primary); }
         nav a { color: var(--text-dim); text-decoration: none; margin-left: 25px; font-weight: 500; transition: var(--transition); font-size: 14px; }
         nav a:hover { color: var(--primary); }
@@ -70,21 +80,17 @@
         .header-right { display: flex; align-items: center; gap: 20px; }
         .theme-btn { cursor: pointer; font-size: 18px; color: var(--text-main); transition: 0.3s; }
 
-        /* --- Hero --- */
         .hero { text-align: center; padding: 180px 20px 100px; background: radial-gradient(circle at center, rgba(0, 191, 255, 0.05) 0%, transparent 70%); }
         .hero h1 { font-size: 56px; margin-bottom: 20px; line-height: 1.1; }
 
-        /* --- About --- */
         .about-wrapper { display: flex; align-items: center; gap: 50px; background: var(--bg-surface); padding: 50px; border-radius: 30px; border: 1px solid var(--border); margin-bottom: 60px; }
         .about-img { width: 280px; height: 280px; border-radius: 20px; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
 
-        /* --- Mentorship --- */
         .mentorship-card { background: var(--bg-card); border: 1px solid var(--primary); padding: 50px; border-radius: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
         .course-list { list-style: none; margin: 25px 0; }
         .course-list li { margin-bottom: 15px; display: flex; align-items: center; gap: 12px; color: var(--text-main); }
         .course-list li i { color: var(--primary); }
 
-        /* --- Tools Slider & Grid --- */
         .slider-container { position: relative; width: 100%; height: 240px; overflow: hidden; border-bottom: 1px solid var(--border); background: #000; }
         .slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
         .slider-img { min-width: 100%; height: 100%; object-fit: cover; }
@@ -97,18 +103,23 @@
         .tool-card:hover { border-color: var(--primary); transform: translateY(-8px); }
         .tool-content { padding: 30px; }
 
-        /* --- Form --- */
+        .sale-badge { background: #ff4d4d; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; font-weight: bold; }
+        .old-price { text-decoration: line-through; color: var(--text-dim); font-size: 14px; margin-right: 8px; }
+        .sale-price { color: #ff4d4d; font-size: 20px; font-weight: 700; }
+        .global-sale-banner { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: white; text-align: center; padding: 12px; font-weight: bold; position: relative; z-index: 1001; display: none; }
+
         .form-card { background: var(--bg-surface); padding: 40px; border-radius: 24px; border: 1px solid var(--border); max-width: 700px; margin: 0 auto; text-align: center; }
         .input-group { margin-bottom: 20px; text-align: left; display: flex; flex-direction: column; }
         .input-group label { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
         input, textarea { background: var(--bg-deep); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: var(--text-main); width: 100%; }
 
-        /* --- Buttons --- */
         .btn { padding: 16px 32px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-block; border: none; }
         .btn-primary { background: var(--primary); color: #000; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-glow); }
+        .btn-danger { background: #ff4d4d; color: white; }
+        .btn-warning { background: #ff9800; color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
 
-        /* --- Footer (FULL RESTORED) --- */
         .footer-main { background: var(--bg-surface); padding: 80px 8% 40px; border-top: 1px solid var(--border); }
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; margin-bottom: 50px; }
         .footer-col h3 { color: var(--primary); font-size: 20px; margin-bottom: 25px; }
@@ -125,15 +136,116 @@
         .social-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; color: var(--text-dim); text-decoration: none; transition: 0.3s; border: 1px solid var(--border); }
         .social-btn:hover { background: var(--primary); color: #000; transform: translateY(-3px); }
 
-        /* --- Sidebar --- */
         .cart-sidebar { position: fixed; right: -400px; top: 0; width: 380px; height: 100%; background: var(--bg-surface); z-index: 2000; transition: 0.4s; padding: 40px; border-left: 1px solid var(--border); overflow-y: auto; }
         .cart-sidebar.active { right: 0; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; background: rgba(var(--primary), 0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
+
+        /* PAYMENT MODAL - NO SCROLL, FULLY VISIBLE */
+        .payment-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(8px);
+            z-index: 3500; display: none; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        .payment-modal-content {
+            background: var(--bg-surface);
+            border-radius: 24px;
+            padding: 20px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .payment-modal-content h2 { font-size: 20px; margin-bottom: 10px; }
+        .total-amount {
+            font-size: 18px; font-weight: 800; color: var(--primary);
+            text-align: center; padding: 10px; background: rgba(0,191,255,0.1);
+            border-radius: 12px; margin: 12px 0;
+        }
+        .payment-options { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+        .payment-btn {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 16px; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            cursor: pointer; transition: 0.2s; font-weight: 600; font-size: 14px;
+        }
+        .payment-btn i { font-size: 20px; width: 28px; flex-shrink: 0; }
+        .payment-btn span { flex: 1; }
+        .payment-btn:hover { border-color: var(--primary); transform: translateX(3px); }
+        .payment-details {
+            display: none; margin-top: 12px; padding: 12px;
+            background: var(--bg-deep); border-radius: 12px; text-align: left;
+            word-break: break-word;
+        }
+        .payment-details p {
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .payment-details strong {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .payment-details.active-detail { display: block; }
+        .copy-btn {
+            background: var(--primary); color: #000; border: none;
+            padding: 8px 12px; border-radius: 8px; cursor: pointer;
+            font-weight: 600; font-size: 12px; width: 100%; margin-top: 8px;
+        }
+        .btn-outline {
+            background: transparent; border: 1px solid var(--primary);
+            color: var(--primary); padding: 8px 12px; border-radius: 8px;
+            font-weight: 600; width: 100%; margin-top: 8px; cursor: pointer;
+        }
+
+        /* ADMIN PANEL */
+        .admin-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(12px);
+            z-index: 3000; display: none; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        .admin-login-box, .admin-panel {
+            background: var(--bg-surface); border-radius: 30px; padding: 40px;
+            border: 2px solid var(--primary); width: 100%; max-width: 450px; text-align: center;
+        }
+        .admin-panel { max-width: 1000px; max-height: 85vh; overflow-y: auto; display: none; }
+        .admin-panel.active-panel { display: block; }
+        .admin-login-box input {
+            width: 100%; padding: 14px; margin: 12px 0; border-radius: 12px;
+            border: 1px solid var(--border); background: var(--bg-deep); color: var(--text-main);
+        }
+        .login-error { color: #ff4d4d; font-size: 13px; margin-top: 10px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .admin-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; background: var(--bg-card); padding: 20px; border-radius: 20px; }
+        .admin-form input, .admin-form textarea { background: var(--bg-deep); border: 1px solid var(--border); padding: 12px; border-radius: 12px; color: var(--text-main); width: 100%; }
+        .image-input-group { grid-column: span 2; display: flex; flex-direction: column; gap: 8px; }
+        .admin-tools-list { display: flex; flex-direction: column; gap: 12px; max-height: 300px; overflow-y: auto; }
+        .admin-tool-item { background: var(--bg-card); border-radius: 16px; padding: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; border-left: 4px solid var(--primary); }
+        .btn-sm { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; margin: 3px; }
 
         @media (max-width: 992px) {
             .about-wrapper, .mentorship-card { flex-direction: column; grid-template-columns: 1fr; text-align: center; }
             .footer-grid { grid-template-columns: 1fr; gap: 40px; text-align: left; }
             .hero h1 { font-size: 38px; }
+            .admin-form { grid-template-columns: 1fr; }
+            .image-input-group { grid-column: span 1; }
+            .payment-modal-content {
+                max-width: 380px;
+                padding: 16px;
+            }
+            .payment-btn {
+                padding: 10px 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            .payment-modal-content {
+                max-width: 340px;
+                padding: 14px;
+            }
+            .payment-details p {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -148,302 +260,426 @@
         <p style="margin-top: 15px; color: var(--primary); font-size: 12px; letter-spacing: 3px; font-weight:600;">TRADEMENTIX</p>
     </div>
 
-    <header>
-        <a href="#" class="logo">TRADE<span>MENTIX</span></a>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#mentorship">Mentorship</a>
-            <a href="#tools">Indicators</a>
-            <a href="#custom-script">Pine Script</a>
-        </nav>
-        <div class="header-right">
-            <div class="theme-btn" onclick="toggleTheme()">
-                <i class="fas fa-moon" id="theme-icon"></i>
-            </div>
-            <div style="cursor:pointer; position:relative" onclick="toggleCart()">
-                <i class="fas fa-shopping-bag" style="font-size: 20px; color: var(--text-main);"></i>
-                <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--primary); color:#000; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span>
-            </div>
-        </div>
-    </header>
+    <div id="main-content">
+        <div class="global-sale-banner" id="globalSaleBanner"></div>
 
-    <section class="hero">
-        <h1>Trade with <br><span style="color:var(--primary)">Pure Logic</span></h1>
-        <p style="color: var(--text-dim); font-size: 18px; max-width: 600px; margin: 0 auto 30px;">Institutional SMC/ICT Strategies & Custom Pine Script Tools.</p>
-        <a href="#tools" class="btn btn-primary">Browse Tools</a>
-    </section>
-
-    <section class="container" id="about">
-        <div class="about-wrapper">
-            <img src="https://iili.io/frdlVm7.jpg" alt="Aneeq - Trading Mentor" class="about-img">
-            <div class="about-text">
-                <h3>Hi, I'm Aneeq</h3>
-                <p style="color: var(--text-dim);">I am a professional trading mentor and Strategy developer. I provide high-quality indicators and structured trading education, helping traders master market structure, liquidity, and high-probability entries with confidence.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" id="mentorship">
-        <h2 style="text-align: center; margin-bottom: 50px;">Private Mentorship</h2>
-        <div class="mentorship-card">
-            <div>
-                <h3 style="color: var(--primary);">SMC + ICT Mastery</h3>
-                <ul class="course-list">
-                    <li><i class="fas fa-check-circle"></i> Market Structure & MSS</li>
-                    <li><i class="fas fa-check-circle"></i> Liquidity (All types of liquidity)</li>
-                    <li><i class="fas fa-check-circle"></i> All Types Of Blocks</li>
-                    <li><i class="fas fa-check-circle"></i> Fair Value Gaps & IFVG</li>
-                    <li><i class="fas fa-check-circle"></i> ICT Entry Levels</li>
-                    <li><i class="fas fa-check-circle"></i> Advanced Risk Management</li>
-                    <li><i class="fas fa-check-circle"></i> Advanced Trading Psychology</li>
-                    <li><i class="fas fa-check-circle"></i> Lifetime Access To Our VIP Community</li>
-                </ul>
-            </div>
-            <div style="text-align: center; background: rgba(var(--primary), 0.03); padding: 30px; border-radius: 20px;">
-                <div style="font-size: 40px; font-weight: 800; margin-bottom: 15px;">$50</div>
-                <a href="https://wa.me/+923246481070?text=I%20want%20to%20enroll%20in%20mentorship" target="_blank" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="container" id="tools">
-        <h2 style="text-align: center; margin-bottom: 50px;">Premium Tools</h2>
-        <div class="tools-grid">
-            
-            <div class="tool-card">
-                <div class="slider-container" id="slider-1">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-1', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/frdpcOu.png" class="slider-img">
-                        <img src="https://iili.io/frdyyCv.png" class="slider-img">
-                        <img src="https://iili.io/frdtVyb.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-1', 1)"><i class="fas fa-chevron-right"></i></button>
+        <header>
+            <a href="#" class="logo" id="mainLogo">TRADE<span>MENTIX</span></a>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#mentorship">Mentorship</a>
+                <a href="#tools">Indicators</a>
+                <a href="#custom-script">Pine Script</a>
+            </nav>
+            <div class="header-right">
+                <div class="theme-btn" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="theme-icon"></i>
                 </div>
-                <div class="tool-content">
-                    <h3>MFX V15</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Precision scalping signals for high-probability trades.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$14.99</span>
-                        <button onclick="addToCart('MFX V15', 14.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
+                <div style="cursor:pointer; position:relative" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag" style="font-size: 20px; color: var(--text-main);"></i>
+                    <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--primary); color:#000; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">0</span>
                 </div>
             </div>
+        </header>
 
-            <div class="tool-card">
-                <div class="slider-container" id="slider-2">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-2', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/fr2BkI2.png" class="slider-img">
-                        <img src="https://iili.io/fr2Q7kb.png" class="slider-img">
-                        <img src="https://iili.io/fr2ojdg.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-2', 1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <div class="tool-content">
-                    <h3>Quantum FX Scalper</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Real-time market insights for accurate entries.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$29.99</span>
-                        <button onclick="addToCart('Quantum FX Scalper', 29.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
+        <section class="hero">
+            <h1>Trade with <br><span style="color:var(--primary)">Pure Logic</span></h1>
+            <p style="color: var(--text-dim); font-size: 18px; max-width: 600px; margin: 0 auto 30px;">Institutional SMC/ICT Strategies & Custom Pine Script Tools.</p>
+            <a href="#tools" class="btn btn-primary">Browse Tools</a>
+        </section>
+
+        <section class="container" id="about">
+            <div class="about-wrapper">
+                <img src="https://iili.io/frdlVm7.jpg" alt="Aneeq - Trading Mentor" class="about-img">
+                <div class="about-text">
+                    <h3>Hi, I'm Aneeq</h3>
+                    <p style="color: var(--text-dim);">I am a professional trading mentor and Strategy developer. I provide high-quality indicators and structured trading education, helping traders master market structure, liquidity, and high-probability entries with confidence.</p>
                 </div>
             </div>
+        </section>
 
-            <div class="tool-card">
-                <div class="slider-container" id="slider-3">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-3', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/fr2ugJ1.png" class="slider-img">
-                        <img src="https://iili.io/fr39YXa.png" class="slider-img">
-                        <img src="https://iili.io/fr25MUN.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-3', 1)"><i class="fas fa-chevron-right"></i></button>
+        <section class="container" id="mentorship">
+            <h2 style="text-align: center; margin-bottom: 50px;">Private Mentorship</h2>
+            <div class="mentorship-card">
+                <div>
+                    <h3 style="color: var(--primary);">SMC + ICT Mastery</h3>
+                    <ul class="course-list">
+                        <li><i class="fas fa-check-circle"></i> Market Structure & MSS</li>
+                        <li><i class="fas fa-check-circle"></i> Liquidity (All types of liquidity)</li>
+                        <li><i class="fas fa-check-circle"></i> All Types Of Blocks</li>
+                        <li><i class="fas fa-check-circle"></i> Fair Value Gaps & IFVG</li>
+                        <li><i class="fas fa-check-circle"></i> ICT Entry Models</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced Risk Management</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced Trading Psychology</li>
+                        <li><i class="fas fa-check-circle"></i> Lifetime Access To Our VIP Community</li>
+                    </ul>
                 </div>
-                <div class="tool-content">
-                    <h3>WOI Scalper</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Automated H-L sweeps.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$9.99</span>
-                        <button onclick="addToCart('WOI scalper', 9.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
+                <div style="text-align: center; background: rgba(var(--primary), 0.03); padding: 30px; border-radius: 20px;">
+                    <div style="font-size: 40px; font-weight: 800; margin-bottom: 15px;">$50</div>
+                    <a href="https://wa.me/+923246481070?text=I%20want%20to%20enroll%20in%20mentorship" target="_blank" class="btn btn-primary" style="width: 100%;">Enroll Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container" id="tools">
+            <h2 style="text-align: center; margin-bottom: 50px;">Premium Tools</h2>
+            <div class="tools-grid" id="toolsGrid"></div>
+        </section>
+
+        <section class="container" id="custom-script">
+            <div class="form-card">
+                <h3>Custom Pine Script Request</h3>
+                <div class="input-group">
+                    <label>Strategy Name</label>
+                    <input type="text" id="strat-name">
+                </div>
+                <div class="input-group">
+                    <label>Strategy Details</label>
+                    <textarea id="strat-desc" rows="4"></textarea>
+                </div>
+                <button onclick="sendScriptRequest()" class="btn btn-primary" style="width: 100%;">Send via WhatsApp</button>
+            </div>
+        </section>
+
+        <footer class="footer-main">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>TradeMentix by Aneeq</h3>
+                    <p>Professional trading mentor and computer science student specializing in institutional price action and custom Pine Script tools.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Mentor</a></li>
+                        <li><a href="#tools">Trading Tools</a></li>
+                        <li><a href="#mentorship">Enrollment</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Details</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> support@tradementix.com</li>
+                        <li><i class="fab fa-whatsapp"></i> +92 324 6481070</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Punjab, Pakistan</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="tool-card">
-                <div class="slider-container" id="slider-4">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-4', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/fr2czI1.png" class="slider-img">
-                        <img src="https://iili.io/fr33cUx.png" class="slider-img">
-                        <img src="https://iili.io/fr3S5Qe.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-4', 1)"><i class="fas fa-chevron-right"></i></button>
+            <div style="border-top: 1px solid var(--border); padding-top: 40px;">
+                <div class="social-title">Follow My Setup</div>
+                <div class="social-row">
+                    <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
+                    <a href="https://t.me/yourhandle" class="social-btn"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-x-twitter"></i></a>
                 </div>
-                <div class="tool-content">
-                    <h3>Alpha FX Scalper</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Multi-timeframe bias alignment.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$29.99</span>
-                        <button onclick="addToCart('Alpha FX Scalper', 29.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
-                </div>
+                <p style="color: var(--text-dim); font-size: 13px;">© 2026 TradeMentix by Aneeq. All Rights Reserved.</p>
             </div>
+        </footer>
 
-            <div class="tool-card">
-                <div class="slider-container" id="slider-5">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-5', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/fr3oKF9.png" class="slider-img">
-                        <img src="https://iili.io/fr3ItV4.png" class="slider-img">
-                        <img src="https://iili.io/fr3uwZJ.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-5', 1)"><i class="fas fa-chevron-right"></i></button>
+        <div class="cart-sidebar" id="cart-sidebar">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h3>Your Cart</h3>
+                <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size: 20px;"></i>
+            </div>
+            <div id="cart-items"></div>
+            <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <div style="display:flex; justify-content:space-between; font-weight:700;">
+                    <span>Total</span>
+                    <span id="total-price" style="color: var(--primary);">$0.00</span>
                 </div>
-                <div class="tool-content">
-                    <h3>Liquidity Hunter Pro</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Detects liquidity zones and smart money moves.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$50</span>
-                        <button onclick="addToCart('Liquidity Hunter Pro', 50)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tool-card">
-                <div class="slider-container" id="slider-6">
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider-6', -1)"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slider-track">
-                        <img src="https://iili.io/fr37Lb9.png" class="slider-img">
-                        <img src="https://iili.io/fr3YmhX.png" class="slider-img">
-                        <img src="https://iili.io/fr3ab8Q.png" class="slider-img">
-                    </div>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider-6', 1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <div class="tool-content">
-                    <h3>Price Action Pro</h3>
-                    <p style="color:var(--text-dim); margin-bottom:15px;">Advanced price action trading precision.</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size: 20px; font-weight: 700;">$69.99</span>
-                        <button onclick="addToCart('Price Action Pro', 69.99)" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="container" id="custom-script">
-        <div class="form-card">
-            <h3>Custom Pine Script Request</h3>
-            <div class="input-group">
-                <label>Strategy Name</label>
-                <input type="text" id="strat-name">
-            </div>
-            <div class="input-group">
-                <label>Strategy Details</label>
-                <textarea id="strat-desc" rows="4"></textarea>
-            </div>
-            <button onclick="sendScriptRequest()" class="btn btn-primary" style="width: 100%;">Send via WhatsApp</button>
-        </div>
-    </section>
-
-    <footer class="footer-main">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h3>TradeMentix by Aneeq</h3>
-                <p>Professional trading mentor and computer science student specializing in institutional price action and custom Pine Script tools.</p>
-            </div>
-            <div class="footer-col">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#about">About Mentor</a></li>
-                    <li><a href="#tools">Trading Tools</a></li>
-                    <li><a href="#mentorship">Enrollment</a></li>
-                    <li><a href="#">Success Stories</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h3>Contact Details</h3>
-                <ul class="contact-info">
-                    <li><i class="fas fa-envelope"></i> support@tradementix.com</li>
-                    <li><i class="fab fa-whatsapp"></i> +92 324 6481070</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Punjab, Pakistan</li>
-                </ul>
+                <button onclick="showPaymentModal()" class="btn btn-primary" style="width: 100%; margin-top:20px;">Checkout</button>
             </div>
         </div>
 
-        <div style="border-top: 1px solid var(--border); padding-top: 40px;">
-            <div class="social-title">Follow My Setup</div>
-            <div class="social-row">
-                <a href="#" class="social-btn"><i class="fab fa-discord"></i></a>
-                <a href="https://t.me/yourhandle" class="social-btn"><i class="fab fa-telegram-plane"></i></a>
-                <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-btn"><i class="fab fa-x-twitter"></i></a>
+        <!-- PAYMENT MODAL - FIXED HEIGHT, NO SCROLL -->
+        <div id="paymentModal" class="payment-modal">
+            <div class="payment-modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h2><i class="fas fa-credit-card"></i> Select Payment</h2>
+                    <i class="fas fa-times" onclick="closePaymentModal()" style="cursor:pointer; font-size: 20px;"></i>
+                </div>
+                <div class="total-amount" id="modalTotal">$0.00</div>
+                <div class="payment-options">
+                    <div class="payment-btn" onclick="selectPaymentMethod('whatsapp')">
+                        <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                        <span>WhatsApp Order</span>
+                        <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="payment-btn" onclick="selectPaymentMethod('easypaisa')">
+                        <i class="fas fa-mobile-alt" style="color: #8BC34A;"></i>
+                        <span>EasyPaisa</span>
+                        <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="payment-btn" onclick="selectPaymentMethod('jazzcash')">
+                        <i class="fas fa-mobile-alt" style="color: #FF9800;"></i>
+                        <span>JazzCash</span>
+                        <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+                    </div>
+                    <div class="payment-btn" onclick="selectPaymentMethod('bank')">
+                        <i class="fas fa-university" style="color: var(--primary);"></i>
+                        <span>Bank Transfer</span>
+                        <i class="fas fa-chevron-right" style="margin-left: auto;"></i>
+                    </div>
+                </div>
+                
+                <div id="whatsappDetail" class="payment-details">
+                    <p><i class="fab fa-whatsapp"></i> Send your order on WhatsApp:</p>
+                    <button onclick="checkoutWhatsApp()" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Send Order on WhatsApp</button>
+                </div>
+                
+                <div id="easypaisaDetail" class="payment-details">
+                    <p><strong>📱 EasyPaisa Account:</strong></p>
+                    <p>Account: <strong>0340-6843562</strong></p>
+                    <p>Name:Muhammad Aneeq Tariq Toor</p>
+                    <p>Amount: <span id="easypaisaAmount">$0.00</span></p>
+                    <button class="copy-btn" onclick="copyToClipboard('03401234567')"><i class="fas fa-copy"></i> Copy Account</button>
+                    <button onclick="sendPaymentConfirmation('EasyPaisa')" class="btn-outline">Send Confirmation</button>
+                </div>
+                
+                <div id="jazzcashDetail" class="payment-details">
+                    <p><strong>📱 JazzCash Account:</strong></p>
+                    <p>Account: <strong>0340-6843562</strong></p>
+                    <p>Name:Muhammad Aneeq Tariq Toor </p>
+                    <p>Amount: <span id="jazzcashAmount">$0.00</span></p>
+                    <button class="copy-btn" onclick="copyToClipboard('03217654321')"><i class="fas fa-copy"></i> Copy Account</button>
+                    <button onclick="sendPaymentConfirmation('JazzCash')" class="btn-outline">Send Confirmation</button>
+                </div>
+                
+                <div id="bankDetail" class="payment-details">
+                    <p><strong>🏦 Bank Transfer (Askari Bank):</strong></p>
+                    <p>Account: 01430320215417</p>
+                   <!--<p>IBAN: PK36MEZN0012345678901</p>-->
+                    <p>Holder:Muhammad Aneeq Tariq Noor</p>
+                    <p>Amount: <span id="bankAmount">$0.00</span></p>
+                    <button class="copy-btn" onclick="copyToClipboard('PK36MEZN0012345678901')"><i class="fas fa-copy"></i> Copy IBAN</button>
+                    <button onclick="sendPaymentConfirmation('Bank Transfer')" class="btn-outline">Send Confirmation</button>
+                </div>
             </div>
-            <p style="color: var(--text-dim); font-size: 13px;">© 2026 TradeMentix by Aneeq. All Rights Reserved.</p>
         </div>
-    </footer>
 
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h3>Your Cart</h3>
-            <i class="fas fa-times" onclick="toggleCart()" style="cursor:pointer; font-size: 20px;"></i>
-        </div>
-        <div id="cart-items"></div>
-        <div style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
-            <div style="display:flex; justify-content:space-between; font-weight:700;">
-                <span>Total</span>
-                <span id="total-price" style="color: var(--primary);">$0.00</span>
+        <!-- ADMIN PANEL -->
+        <div id="adminOverlay" class="admin-overlay">
+            <div id="adminLoginBox" class="admin-login-box">
+                <i class="fas fa-lock" style="font-size: 48px; color: var(--primary); margin-bottom: 20px;"></i>
+                <h3>Admin Access</h3>
+                <input type="text" id="loginUsername" placeholder="Username">
+                <input type="password" id="loginPassword" placeholder="Password">
+                <button onclick="checkAdminLogin()" class="btn btn-primary" style="width: 100%;">Login</button>
+                <div id="loginError" class="login-error"></div>
             </div>
-            <button onclick="checkoutWhatsApp()" class="btn btn-primary" style="width: 100%; margin-top:20px;">Checkout via WhatsApp</button>
+            <div id="adminPanel" class="admin-panel">
+                <div class="admin-header">
+                    <h2><i class="fas fa-crown"></i> Admin Panel</h2>
+                    <i class="fas fa-times" onclick="closeAdmin()" style="cursor:pointer; font-size: 24px;"></i>
+                </div>
+                <div id="adminMsg" style="color: var(--primary); margin-bottom: 15px;"></div>
+                <div class="admin-form">
+                    <input type="text" id="toolName" placeholder="Tool Name">
+                    <input type="number" id="toolPrice" placeholder="Price (USD)">
+                    <input type="number" id="toolSale" placeholder="Sale %">
+                    <textarea id="toolDesc" placeholder="Description" rows="2"></textarea>
+                    <div class="image-input-group">
+                        <label>Image URLs (1 per line)</label>
+                        <textarea id="toolImages" rows="3" placeholder="https://iili.io/example.png"></textarea>
+                    </div>
+                    <button onclick="addTool()" class="btn btn-primary" style="grid-column: span 2;">+ Add Tool</button>
+                </div>
+                <h3>Existing Tools</h3>
+                <div class="admin-tools-list" id="adminToolsList"></div>
+                <div style="margin-top: 20px;">
+                    <h3>Global Sale Banner</h3>
+                    <input type="text" id="globalSaleInput" placeholder="Sale text" style="width:100%; margin:10px 0;">
+                    <button onclick="setGlobalSale()" class="btn btn-primary">Set Banner</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- Dark/Light Mode Logic ---
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'dark');
+        const ADMIN_USERNAME = "RyzenTrader.123";
+        const ADMIN_PASSWORD = "112233";
+        
+        let tools = [
+            { id: 1, name: "MFX V15", price: 14.99, salePercent: 0, description: "Precision scalping signals for high-probability trades.", images: ["https://iili.io/frdpcOu.png","https://iili.io/frdyyCv.png","https://iili.io/frdtVyb.png"] },
+            { id: 2, name: "Quantum FX Scalper", price: 29.99, salePercent: 0, description: "Real-time market insights for accurate entries.", images: ["https://iili.io/fr2BkI2.png","https://iili.io/fr2Q7kb.png","https://iili.io/fr2ojdg.png"] },
+            { id: 3, name: "WOI Scalper", price: 9.99, salePercent: 0, description: "Automated H-L sweeps.", images: ["https://iili.io/fr2ugJ1.png","https://iili.io/fr39YXa.png","https://iili.io/fr25MUN.png"] },
+            { id: 4, name: "Alpha FX Scalper", price: 29.99, salePercent: 0, description: "Multi-timeframe bias alignment.", images: ["https://iili.io/fr2czI1.png","https://iili.io/fr33cUx.png","https://iili.io/fr3S5Qe.png"] },
+            { id: 5, name: "Liquidity Hunter Pro", price: 50, salePercent: 0, description: "Detects liquidity zones and smart money moves.", images: ["https://iili.io/fr3oKF9.png","https://iili.io/fr3ItV4.png","https://iili.io/fr3uwZJ.png"] },
+            { id: 6, name: "Price Action Pro", price: 69.99, salePercent: 0, description: "Advanced price action trading precision.", images: ["https://iili.io/fr37Lb9.png","https://iili.io/fr3YmhX.png","https://iili.io/fr3ab8Q.png"] }
+        ];
+        
+        let nextId = 7;
+        let globalSaleText = "";
+        let cart = [];
+        let sliderStates = {};
+        const MY_NUMBER = "+923246481070";
+        let isAdminLoggedIn = false;
+        let currentTotal = 0;
+
+        function hideLoaderAndShowContent() {
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('main-content');
+            loader.classList.add('hide');
+            mainContent.classList.add('visible');
+            setTimeout(() => { if(loader.parentNode) loader.style.display = 'none'; }, 600);
+        }
+
+        function saveData() {
+            localStorage.setItem("tradementix_tools", JSON.stringify(tools));
+            localStorage.setItem("tradementix_global_sale", globalSaleText);
+        }
+        
+        function loadData() {
+            let savedTools = localStorage.getItem("tradementix_tools");
+            if(savedTools) {
+                tools = JSON.parse(savedTools);
+                nextId = Math.max(...tools.map(t => t.id), 0) + 1;
+            }
+            let savedSale = localStorage.getItem("tradementix_global_sale");
+            if(savedSale) globalSaleText = savedSale;
+            updateGlobalSaleBanner();
+        }
+
+        function updateGlobalSaleBanner() {
+            const banner = document.getElementById("globalSaleBanner");
+            if(globalSaleText && globalSaleText.trim() !== "") {
+                banner.innerHTML = globalSaleText;
+                banner.style.display = "block";
             } else {
-                body.setAttribute('data-theme', 'light');
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'light');
+                banner.style.display = "none";
             }
         }
-        // Load Saved Theme
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.setAttribute('data-theme', 'light');
-            document.getElementById('theme-icon').className = 'fas fa-sun';
+
+        function getEffectivePrice(tool) {
+            if(tool.salePercent && tool.salePercent > 0) {
+                return tool.price * (1 - tool.salePercent / 100);
+            }
+            return tool.price;
         }
 
-        // --- Loader Logic ---
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
-            }, 1000); 
-        });
-
-        let cart = [];
-        const MY_NUMBER = "+923246481070";
-        const sliderStates = {};
-
-        function moveSlider(sliderId, dir) {
-            const slider = document.getElementById(sliderId);
-            const track = slider.querySelector('.slider-track');
-            const images = track.querySelectorAll('.slider-img');
-            if (!sliderStates[sliderId]) sliderStates[sliderId] = 0;
-            sliderStates[sliderId] = (sliderStates[sliderId] + dir + images.length) % images.length;
-            track.style.transform = `translateX(-${sliderStates[sliderId] * 100}%)`;
+        function renderTools() {
+            const grid = document.getElementById("toolsGrid");
+            if(!grid) return;
+            grid.innerHTML = tools.map(tool => {
+                const effPrice = getEffectivePrice(tool);
+                const priceHtml = tool.salePercent > 0 ? 
+                    `<span class="old-price">$${tool.price.toFixed(2)}</span> <span class="sale-price">$${effPrice.toFixed(2)}</span>` :
+                    `<span style="font-size: 20px; font-weight: 700;">$${tool.price.toFixed(2)}</span>`;
+                return `
+                    <div class="tool-card">
+                        <div class="slider-container" id="slider-${tool.id}">
+                            <button class="slider-btn prev-btn" onclick="moveSlider(${tool.id}, -1)"><i class="fas fa-chevron-left"></i></button>
+                            <div class="slider-track">
+                                ${tool.images.map(img => `<img src="${img}" class="slider-img" onerror="this.src='https://via.placeholder.com/400x200?text=No+Image'">`).join('')}
+                            </div>
+                            <button class="slider-btn next-btn" onclick="moveSlider(${tool.id}, 1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="tool-content">
+                            ${tool.salePercent > 0 ? `<div class="sale-badge">🔥 ${tool.salePercent}% OFF</div>` : ''}
+                            <h3>${escapeHtml(tool.name)}</h3>
+                            <p style="color:var(--text-dim); margin-bottom:15px;">${escapeHtml(tool.description)}</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>${priceHtml}</div>
+                                <button onclick="addToCart('${escapeHtml(tool.name)}', ${effPrice})" class="btn btn-primary" style="padding: 10px 15px; font-size:12px;">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            tools.forEach(tool => { if(!sliderStates[tool.id]) sliderStates[tool.id] = 0; updateSliderPosition(tool.id); });
         }
-
-        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+        
+        function updateSliderPosition(toolId) {
+            const container = document.getElementById(`slider-${toolId}`);
+            if(container) {
+                const track = container.querySelector('.slider-track');
+                const idx = sliderStates[toolId] || 0;
+                track.style.transform = `translateX(-${idx * 100}%)`;
+            }
+        }
+        
+        window.moveSlider = function(toolId, dir) {
+            const tool = tools.find(t => t.id === toolId);
+            if(tool) {
+                let idx = sliderStates[toolId] || 0;
+                idx = (idx + dir + tool.images.length) % tool.images.length;
+                sliderStates[toolId] = idx;
+                updateSliderPosition(toolId);
+            }
+        };
+        
+        function renderAdminList() {
+            if(!isAdminLoggedIn) return;
+            const listDiv = document.getElementById("adminToolsList");
+            if(!listDiv) return;
+            listDiv.innerHTML = tools.map(tool => `
+                <div class="admin-tool-item">
+                    <div><strong>${escapeHtml(tool.name)}</strong><br><small>$${tool.price} | Sale: ${tool.salePercent}%</small></div>
+                    <div>
+                        <button class="btn-sm btn-warning" onclick="editTool(${tool.id})">Edit</button>
+                        <button class="btn-sm btn-danger" onclick="deleteTool(${tool.id})">Delete</button>
+                        <button class="btn-sm" style="background:var(--primary);" onclick="setToolSale(${tool.id})">Sale %</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        window.addTool = function() {
+            if(!isAdminLoggedIn) return;
+            const name = document.getElementById("toolName").value.trim();
+            const price = parseFloat(document.getElementById("toolPrice").value);
+            const salePercent = parseInt(document.getElementById("toolSale").value) || 0;
+            const desc = document.getElementById("toolDesc").value.trim();
+            const imagesText = document.getElementById("toolImages").value;
+            let images = imagesText.split('\n').filter(url => url.trim().length > 0).slice(0, 6);
+            if(!name || isNaN(price)) { alert("Enter name and price"); return; }
+            if(images.length === 0) images = ["https://via.placeholder.com/400x200?text=Tool"];
+            tools.push({ id: nextId++, name, price, salePercent, description: desc || "Trading indicator", images });
+            saveData(); renderTools(); renderAdminList(); clearAdminForm();
+        };
+        
+        window.editTool = function(id) {
+            const tool = tools.find(t => t.id === id);
+            if(tool) {
+                document.getElementById("toolName").value = tool.name;
+                document.getElementById("toolPrice").value = tool.price;
+                document.getElementById("toolSale").value = tool.salePercent;
+                document.getElementById("toolDesc").value = tool.description;
+                document.getElementById("toolImages").value = tool.images.join("\n");
+                deleteTool(id, true);
+            }
+        };
+        
+        window.setToolSale = function(id) {
+            const percent = prompt("Enter sale %:", "0");
+            if(percent !== null) {
+                const tool = tools.find(t => t.id === id);
+                if(tool) {
+                    tool.salePercent = Math.min(100, Math.max(0, parseInt(percent) || 0));
+                    saveData(); renderTools(); renderAdminList();
+                }
+            }
+        };
+        
+        window.deleteTool = function(id, silent = false) {
+            const index = tools.findIndex(t => t.id === id);
+            if(index !== -1) { tools.splice(index, 1); saveData(); renderTools(); renderAdminList(); }
+        };
+        
+        window.setGlobalSale = function() {
+            globalSaleText = document.getElementById("globalSaleInput").value;
+            saveData(); updateGlobalSaleBanner();
+        };
+        
+        function clearAdminForm() {
+            document.getElementById("toolName").value = "";
+            document.getElementById("toolPrice").value = "";
+            document.getElementById("toolSale").value = "";
+            document.getElementById("toolDesc").value = "";
+            document.getElementById("toolImages").value = "";
+        }
         
         function updateCart() {
             const list = document.getElementById('cart-items');
@@ -453,34 +689,123 @@
             let sum = 0;
             cart.forEach((item, index) => {
                 sum += item.price;
-                list.innerHTML += `<div class="cart-item">
-                    <div><h4>${item.name}</h4><span>$${item.price.toFixed(2)}</span></div>
-                    <i class="fas fa-times" style="color:#ff4d4d; cursor:pointer;" onclick="removeFromCart(${index})"></i>
-                </div>`;
+                list.innerHTML += `<div class="cart-item"><div><h4>${escapeHtml(item.name)}</h4><span>$${item.price.toFixed(2)}</span></div><i class="fas fa-times" style="color:#ff4d4d; cursor:pointer;" onclick="removeFromCart(${index})"></i></div>`;
             });
             total.innerText = `$${sum.toFixed(2)}`;
             count.innerText = cart.length;
+            currentTotal = sum;
         }
-
-        function addToCart(name, price) {
-            cart.push({name, price});
-            updateCart();
-            if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart();
-        }
-
-        function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
-
-        function checkoutWhatsApp() {
+        
+        window.addToCart = function(name, price) { cart.push({name, price}); updateCart(); if(!document.getElementById('cart-sidebar').classList.contains('active')) toggleCart(); };
+        window.removeFromCart = function(index) { cart.splice(index, 1); updateCart(); };
+        window.toggleCart = function() { document.getElementById('cart-sidebar').classList.toggle('active'); };
+        
+        function showPaymentModal() {
             if(cart.length === 0) return;
-            let items = cart.map(i => i.name).join(", ");
-            window.open(`https://wa.me/${MY_NUMBER}?text=Order: ${items}`, '_blank');
+            const modal = document.getElementById("paymentModal");
+            const pkrAmount = (currentTotal * 280).toFixed(0);
+            document.getElementById("modalTotal").innerHTML = `$${currentTotal.toFixed(2)} (PKR ${pkrAmount})`;
+            document.getElementById("easypaisaAmount").innerHTML = `$${currentTotal.toFixed(2)} / PKR ${pkrAmount}`;
+            document.getElementById("jazzcashAmount").innerHTML = `$${currentTotal.toFixed(2)} / PKR ${pkrAmount}`;
+            document.getElementById("bankAmount").innerHTML = `$${currentTotal.toFixed(2)} / PKR ${pkrAmount}`;
+            modal.style.display = "flex";
+            document.querySelectorAll('.payment-details').forEach(d => d.classList.remove('active-detail'));
         }
-
-        function sendScriptRequest() {
+        
+        function closePaymentModal() { document.getElementById("paymentModal").style.display = "none"; }
+        
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-details').forEach(d => d.classList.remove('active-detail'));
+            if(method === 'whatsapp') document.getElementById("whatsappDetail").classList.add('active-detail');
+            else if(method === 'easypaisa') document.getElementById("easypaisaDetail").classList.add('active-detail');
+            else if(method === 'jazzcash') document.getElementById("jazzcashDetail").classList.add('active-detail');
+            else if(method === 'bank') document.getElementById("bankDetail").classList.add('active-detail');
+        }
+        
+        function copyToClipboard(text) { navigator.clipboard.writeText(text); alert("Copied: " + text); }
+        
+        function sendPaymentConfirmation(paymentMethod) {
+            let items = cart.map(i => i.name).join(", ");
+            let message = `PAYMENT CONFIRMATION\n\nMethod: ${paymentMethod}\nOrder: ${items}\nAmount: $${currentTotal.toFixed(2)} (PKR ${(currentTotal*280).toFixed(0)})\n\nCustomer Name: [Your Name]\nTransaction ID: [Enter ID]`;
+            window.open(`https://wa.me/${+923245481070}?text=${encodeURIComponent(message)}`, '_blank');
+            closePaymentModal();
+        }
+        
+        window.checkoutWhatsApp = function() {
+            let items = cart.map(i => i.name).join(", ");
+            window.open(`https://wa.me/${+923246401070}?text=New Order: ${items} Total: $${currentTotal.toFixed(2)}`, '_blank');
+            closePaymentModal();
+        };
+        
+        window.sendScriptRequest = function() {
             let n = document.getElementById('strat-name').value;
             let d = document.getElementById('strat-desc').value;
-            window.open(`https://wa.me/${MY_NUMBER}?text=Script Request: ${n}%0ADetails: ${d}`, '_blank');
+            window.open(`https://wa.me/${+923206481070}?text=Script Request: ${n}%0ADetails: ${d}`, '_blank');
+        };
+        
+        window.checkAdminLogin = function() {
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+            if(username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                document.getElementById("adminLoginBox").style.display = "none";
+                document.getElementById("adminPanel").classList.add("active-panel");
+                renderAdminList();
+                document.getElementById("loginError").innerHTML = "";
+            } else {
+                document.getElementById("loginError").innerHTML = "❌ Invalid!";
+            }
+        };
+        
+        function openAdmin() {
+            document.getElementById("adminOverlay").style.display = "flex";
+            document.getElementById("adminLoginBox").style.display = "block";
+            document.getElementById("adminPanel").classList.remove("active-panel");
+            isAdminLoggedIn = false;
+            document.getElementById("loginUsername").value = "";
+            document.getElementById("loginPassword").value = "";
         }
+        
+        function closeAdmin() { document.getElementById("adminOverlay").style.display = "none"; }
+        
+        document.addEventListener('keydown', function(e) { if(e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); openAdmin(); } });
+        
+        let clickTimer, clickCounter = 0;
+        document.getElementById('mainLogo').addEventListener('click', function() {
+            clickCounter++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCounter = 0; }, 800);
+            if(clickCounter >= 5) { clickCounter = 0; openAdmin(); }
+        });
+        
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+        
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if(body.getAttribute('data-theme') === 'light') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        if(localStorage.getItem('theme') === 'light') { document.body.setAttribute('data-theme', 'light'); document.getElementById('theme-icon').className = 'fas fa-sun'; }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData(); 
+            renderTools(); 
+            updateCart(); 
+            setTimeout(hideLoaderAndShowContent, 800);
+        });
+        
+        window.addEventListener('load', () => {
+            setTimeout(hideLoaderAndShowContent, 500);
+        });
     </script>
 </body>
 </html>
